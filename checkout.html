@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .checkout-container {
+            background: #d4d0a4;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+            animation: fadeInUp 1s ease;
+        }
+        .checkout-header {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .product-image {
+            width: 100px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+        .product-title {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+        .product-price {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #28a745;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            transform: scale(1.05);
+        }
+        @keyframes fadeInUp {
+            from {
+                transform: translate3d(0, 100%, 0);
+                opacity: 0;
+            }
+            to {
+                transform: translate3d(0, 0, 0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="checkout-container animate__animated animate__fadeInUp">
+        <div class="checkout-header">Checkout</div>
+        <img src="https://via.placeholder.com/100x150" alt="Product Image" class="product-image" id="productImage">
+        <div class="product-title" id="productTitle">Movie Title</div>
+        <div class="product-price">₹299</div>
+        <button class="btn btn-primary" id="confirmPurchaseBtn">Confirm Purchase</button>
+        <button class="btn btn-secondary" id="cancelBtn">Cancel</button>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const title = urlParams.get('title');
+            const poster = urlParams.get('poster');
+            
+            if (title && poster) {
+                document.getElementById('productTitle').textContent = title;
+                document.getElementById('productImage').src = poster;
+            }
+
+            document.getElementById('confirmPurchaseBtn').addEventListener('click', () => {
+    Swal.fire({
+        title: 'Purchase Confirmed!',
+        html: `You have successfully purchased <b>${title}</b>`,
+        icon: 'success',
+        confirmButtonText: 'Great!',
+        customClass: {
+            confirmButton: 'btn btn-success',
+        },
+        buttonsStyling: false,
+    }).then(() => {
+        window.location.href = 'index.html';
+    });
+});
+            document.getElementById('cancelBtn').addEventListener('click', () => {
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You are about to cancel your order!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, cancel it!',
+                    customClass: {
+                        confirmButton: 'btn btn-danger',
+                        cancelButton: 'btn btn-secondary'
+                    },
+                    buttonsStyling: false,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire(
+                            'Cancelled!',
+                            'Your purchase has been cancelled.',
+                            'success'
+                        ).then(() => {
+                            window.location.href = 'index.html';
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
